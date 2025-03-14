@@ -3,6 +3,7 @@
 # throughout this file
 
 import pygame
+from constants import *
 
 def main():
     print("Starting Asteroids")
