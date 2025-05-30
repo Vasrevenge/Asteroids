@@ -3,16 +3,23 @@
 # throughout this file
 
 import pygame
-from pygame.locals import *
+
 from constants import *
 from player import Player
 
 def main():
     pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     Clock = pygame.time.Clock()
+
+    updatables = pygame.sprite.Group()
+    drawables = pygame.sprite.Group()
+
+    Player.containers = (drawables, updatables)
+
+
     player = Player((SCREEN_WIDTH/2), (SCREEN_HEIGHT/2),PLAYER_RADIUS) #(SCREEN_WIDTH/2), (SCREEN_HEIGHT/2),PLAYER_RADIUS
     dt = 0
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     print('Starting Asteroids!')
     print(f"Screen width: {SCREEN_WIDTH}")
@@ -22,12 +29,17 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+            
+        updatables.update(dt)
+
         screen.fill((0,0,0))
-        player.draw(screen)
+
+        for obj in drawables:
+            obj.draw(screen)
+
         pygame.display.flip()
         Clock.tick(60)
         dt = Clock.tick(60)/1000
-        player.update(dt)
 
 if __name__ == "__main__":
     main()
